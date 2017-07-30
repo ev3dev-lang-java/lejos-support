@@ -30,7 +30,7 @@ root@EV3:~# /home/root/lejos/ejre-8-b132-linux-arm-sflt.tar.gz/bin/java -jar lej
 Hello World
 ```
 
-Current Activity:
+## Current Activity:
 
 - Add support for NXTCam V5
 - http://www.mindsensors.com/pdfs/NXTCam5-User-Guide.pdfls
