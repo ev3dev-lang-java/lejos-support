@@ -20,6 +20,8 @@ jrun -cp lejos-support-all-0.1.0.jar examples.HelloWorld
 
 ### Alternative 2:
 
+If you generate a Fat Jar, you could include al libraries and execute in the same way that you have in a Desktop computer.
+
 ```
 root@EV3:~# /home/root/lejos/ejre-8-b132-linux-arm-sflt.tar.gz/bin/java -version
 java version "1.8.0"
