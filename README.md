@@ -1,6 +1,8 @@
 # lejos-support
 A repository to add support for LeJOS project
 
+![](./docs/ev3BrickWithLeJOS.jpg)
+
 https://sourceforge.net/projects/ev3.lejos.p/files/0.9.1-beta/
 
 ## Remote connection
