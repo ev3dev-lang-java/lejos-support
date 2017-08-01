@@ -6,43 +6,51 @@ import lejos.hardware.sensor.I2CSensor;
 import lejos.robotics.geometry.Rectangle2D;
 import lejos.robotics.geometry.RectangleInt32;
 
-
-
 /**
  * Mindsensors NXTCamV5.
  * www.mindsensors.com
  * 
- * Author Lawrie Griffiths
+ * @author Juan Antonio Breña Moral
  * 
  */
 public class NXTCamV5 extends I2CSensor {
+
 	byte[] buf = new byte[4];
-	
-	/**
-	 * Used by sortBy() to choose sorting criteria based on size (ordered largest to smallest).
-	 */
-	public static final char SIZE = 'A';
-	
-	/**
-	 * Used by sortBy() to choose sorting criteria based on color id (ordered 0 to 7).
-	 */
-	public static final char COLOR = 'U';
-	
-	/**
-	 * Used by sortBy() to choose no sorting of detected objects.
-	 */
-	public static final char NO_SORTING = 'X';
-	
+
+	//MODES
+
 	/**
 	 * Used by setTrackingMode() to choose object tracking.
 	 */
 	public static final char OBJECT_TRACKING = 'B';
-	
+
+	/**
+	 * Used by setTrackingMode() to choose face tracking.
+	 */
+	public static final char FACE_TRACKING = 'F';
+
+	/**
+	 * Used by setTrackingMode() to choose eye tracking.
+	 */
+	public static final char EYE_TRACKING = 'e';
+
 	/**
 	 * Used by setTrackingMode() to choose line tracking.
 	 */
 	public static final char LINE_TRACKING = 'L';
-	
+
+	//CAPABILITIES
+
+	/**
+	 * Used to record a short video
+	 */
+	public static final char TAKE_VIDEO = 'M';
+
+	/**
+	 * Used to take a snapshot
+	 */
+	public static final char TAKE_PHOTO = 'P';
+
 	public NXTCamV5(I2CPort port, int address)
 	{
 		super(port, address);
@@ -74,24 +82,6 @@ public class NXTCamV5 extends I2CSensor {
 	}
 	
 	/**
-	 * Camera sorts objects it detects according to criteria, either color, size,
-	 * or no sorting at all.
-	 * @param sortType Use the class constants SIZE, COLOR, or NO_SORTING.
-	 */
-	public void sortBy(char sortType) {
-		sendCommand(sortType);
-	}
-	
-	/**
-	 * 
-	 * @param enable true to enable, false to disable
-	 */
-	public void enableTracking(boolean enable) {
-		if(enable) sendCommand('E');
-		else sendCommand('D');
-	}
-	
-	/**
 	 * Choose either object or line tracking mode.
 	 * @param mode Use either OBJECT_TRACKING or LINE_TRACKING
 	 */
@@ -109,24 +99,7 @@ public class NXTCamV5 extends I2CSensor {
 		getData(0x43 + (id * 5), buf, 1);
 		return (0xFF & buf[0]);
 	}
-	
-	/**
-	 * Returns the NXTCam firmware version.
-	 * @return version number as a string
-	 */
-	public String getFirmwareVersion() {
-		sendCommand('V');
-		byte mem_loc = 0x42;
-		// NXTCam V1.1 appears to need a delay here otherwise it doesn't refresh the memory
-		// at location 0x42 the first time. 50 ms is not enough, 100 ms works:
-		try {  
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		return fetchString(mem_loc, 12);
-	}
-	
+
 	/**
 	 * Get the rectangle containing a tracked object
 	 * 
@@ -147,5 +120,19 @@ public class NXTCamV5 extends I2CSensor {
 	 */
 	public void sendCommand(char cmd) {
 		sendData(0x41, (byte) cmd);
+	}
+
+	/**
+	 * Create a new video
+	 */
+	public void createVideo(){
+		sendCommand(TAKE_VIDEO);
+	}
+
+	/**
+	 * Create a photo
+	 */
+	public void createPhoto(){
+		sendCommand(TAKE_PHOTO);
 	}
 }

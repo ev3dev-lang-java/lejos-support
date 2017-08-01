@@ -1,31 +1,36 @@
-package examples;
+package examples.nxtcamv5;
 
 import lejos.hardware.Button;
 import lejos.hardware.Sound;
 import lejos.hardware.device.NXTCam;
+import lejos.hardware.device.NXTCamV5;
 import lejos.hardware.port.SensorPort;
+import lejos.utility.Delay;
 
 /**
  * Created by jabrena on 30/7/17.
  */
-public class NXTCamTest2 {
+public class TrackObjectsDemo {
 
     public static void main(String[] args){
 
-        System.out.println("NXTCamV5 V5 Demo");
+        System.out.println("NXTCamV5 Track Object Demo");
 
-        final NXTCam camera = new NXTCam(SensorPort.S1);
+        final NXTCamV5 camera = new NXTCamV5(SensorPort.S1);
 
-        camera.setTrackingMode(NXTCam.OBJECT_TRACKING);
-        camera.sortBy(NXTCam.SIZE);
-        camera.enableTracking(true);
+        int counter = 0;
+        while (Button.ESCAPE.isUp()) {
+            counter++;
+            System.out.println("Iteration: " + counter);
 
-        while (Button.waitForAnyPress() == Button.ID_ESCAPE) {
             int trackedObject = camera.getNumberOfObjects();
             System.out.println(trackedObject);
+
             if(trackedObject > 0) {
                 Sound.beep();
             }
+
+            Delay.msDelay(1000);
         }
 
     }
